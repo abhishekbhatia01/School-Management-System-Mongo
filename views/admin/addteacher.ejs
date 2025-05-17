@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Teacher</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+        
+        .reg-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            text-align: center;
+        }
+        
+        h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 16px;
+            color: #007bff;
+        }
+        
+        form input, form select {
+            width: 100%;
+            height: 50px;
+            padding: 10px 10px 10px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        form input:focus, form select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            height: 50px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .form-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .error {
+            background-color: #fff3f3;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .success {
+            background-color: #f0fff4;
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        
+        .form-note {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e7f3ff;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: left;
+            border-left: 4px solid #007bff;
+        }
+        
+        .form-note strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="reg-form">
+        <h2>Add Teacher</h2>
+        
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="message error">
+                <%= error %>
+            </div>
+        <% } %>
+        
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="message success">
+                <%= success %>
+            </div>
+        <% } %>
+
+        <form action="/teacher" method="post" onsubmit="return validateForm()">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="First Name" name="fname" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Last Name" name="lname" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-birthday-cake"></i>
+                <input type="number" placeholder="Age" name="age" min="18" max="70" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" placeholder="Mobile Number" name="mobno" pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-calendar"></i>
+                <input type="date" name="jdate" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-graduation-cap"></i>
+                <input type="text" placeholder="Qualification (e.g., M.Sc., B.Ed.)" name="qualification" required>
+            </div>
+            
+            <div class="input-group">
+                <i class="fas fa-book"></i>
+                <input type="text" placeholder="Subject" name="subject" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Add Teacher</button>
+        </form>
+        
+        <div class="form-footer">
+            Add a new teacher to the registration system
+        </div>
+        
+       
+    </div>
+
+    <script>
+        function validateForm() {
+            const mobno = document.querySelector('input[name="mobno"]').value;
+            const age = document.querySelector('input[name="age"]').value;
+            const qualification = document.querySelector('input[name="qualification"]').value;
+            const subject = document.querySelector('input[name="subject"]').value;
+            
+            if (!/^[0-9]{10}$/.test(mobno)) {
+                alert('Please enter a valid 10-digit mobile number');
+                return false;
+            }
+            
+            if (age < 18 || age > 70) {
+                alert('Age must be between 18 and 70');
+                return false;
+            }
+            
+            if (qualification.trim() === '') {
+                alert('Please enter qualification');
+                return false;
+            }
+            
+            if (subject.trim() === '') {
+                alert('Please enter subject');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Set default date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[name="jdate"]').value = today;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circulars List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Reuse the same styles from other pages */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+          display: flex;
+          height: 100vh;
+          background-color: #f6f8fa;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+          width: 220px;
+          background-color: #2c3e50;
+          color: white;
+          padding: 20px 0;
+          box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+          z-index: 10;
+          height: 100vh;
+          position: fixed;
+        }
+        
+        .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+        .sidebar hr {
+          border: none;
+          height: 1px;
+          background-color: rgba(255, 255, 255, 0.1);
+          margin-bottom: 20px;
+        }
+
+        .nav-links {
+          padding: 0 15px;
+        }
+
+        .nav-links a {
+          display: flex;
+          align-items: center;
+          color: #bdc3c7;
+          text-decoration: none;
+          padding: 12px 15px;
+          margin-bottom: 8px;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          color: white;
+        }
+
+        .nav-links a.active {
+          background-color: #3498db;
+          color: white;
+        }
+
+        .nav-links i {
+          width: 20px;
+          margin-right: 10px;
+          font-size: 1.1rem;
+        }
+        
+        /* Main content area */
+        .content {
+          flex-grow: 1;
+          padding: 25px;
+          margin-left: 220px;
+        }
+        
+        .container {
+          background-color: white;
+          border-radius: 10px;
+          padding: 25px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+        
+        /* Headings */
+        h1 {
+          color: #2c3e50;
+          margin-bottom: 25px;
+          font-weight: 600;
+          font-size: 1.8rem;
+        }
+        
+        /* Action Links */
+        .action-links {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 25px;
+        }
+        
+        .action-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background-color: #3498db;
+          color: white;
+          padding: 10px 15px;
+          border-radius: 4px;
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 500;
+          transition: background-color 0.2s;
+        }
+        
+        .action-btn:hover {
+          background-color: #2980b9;
+        }
+        
+        .action-btn.secondary {
+          background-color: #95a5a6;
+        }
+        
+        .action-btn.secondary:hover {
+          background-color: #7f8c8d;
+        }
+        
+        /* Circular cards */
+        .circulars-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+        }
+        
+        .circular-card {
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          padding: 20px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .circular-header {
+          margin-bottom: 15px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e9ecef;
+        }
+        
+        .circular-title {
+          color: #2c3e50;
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+        
+        .circular-meta {
+          display: flex;
+          justify-content: space-between;
+          color: #7f8c8d;
+          font-size: 0.85rem;
+        }
+        
+        .circular-content {
+          color: #2c3e50;
+          margin-bottom: 15px;
+          line-height: 1.5;
+        }
+        
+        .circular-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 10px;
+          border-top: 1px solid #e9ecef;
+          font-size: 0.85rem;
+        }
+        
+        .audience-tag {
+          display: inline-block;
+          padding: 3px 8px;
+          background-color: #e9ecef;
+          color: #2c3e50;
+          border-radius: 4px;
+        }
+        
+        .circular-actions a {
+          color: #e74c3c;
+          text-decoration: none;
+          font-size: 0.85rem;
+          transition: color 0.2s;
+        }
+        
+        .circular-actions a:hover {
+          color: #c0392b;
+        }
+        
+        .no-data {
+          text-align: center;
+          padding: 40px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          color: #7f8c8d;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+          body {
+            flex-direction: column;
+          }
+          
+          .sidebar {
+            width: 60px;
+            height: 100vh;
+          }
+          
+          .content {
+            margin-left: 60px;
+          }
+          
+          .sidebar h2, .nav-links a span {
+            display: none;
+          }
+          
+          .nav-links i {
+            margin-right: 0;
+          }
+          
+          .nav-links a {
+            text-align: center;
+            padding: 15px 0;
+          }
+          
+          .circulars-container {
+            grid-template-columns: 1fr;
+          }
+        }
+        .welcome {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .welcome h3 {
+      color: #2c3e50;
+      font-weight: 600;
+      margin: 0;
+    }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>School Management</h2>
+        <hr>
+        <div class="nav-links">
+          <a href="/admin"><i class="fa-solid fa-gauge-high"></i> <span>Home</span></a>
+          <a href="/student"><i class="fa-solid fa-user"></i> <span>Students</span></a>
+          <a href="/teacher"><i class="fa-solid fa-person-chalkboard"></i> <span>Teachers</span></a>
+          <a href="/class"><i class="fa-solid fa-chalkboard-user"></i> <span>Class</span></a>
+          <a href="//showCirculars" class="active"><i class="fa-solid fa-note-sticky"></i> <span>Circular</span></a>
+          <a href="/admin-out"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+        </div>
+    </div>
+    
+    <div class="content">
+      <div class="welcome">
+          <h3>Circular</h3>
+      </div> 
+        <div class="container">
+            <div class="action-links">
+                <a href="/addCircular" class="action-btn">
+                    <i class="fas fa-plus"></i> Add New Circular
+                </a>
+              
+            </div>
+            
+            <% if (circulars.length === 0) { %>
+                <div class="no-data">
+                    <i class="fas fa-clipboard fa-2x" style="margin-bottom: 10px;"></i>
+                    <p>No circulars found. Add your first circular to get started.</p>
+                </div>
+            <% } else { %>
+                <div class="circulars-container">
+                    <% circulars.forEach(circular => { %>
+                        <div class="circular-card">
+                            <div class="circular-header">
+                                <div class="circular-title"><%= circular.title %></div>
+                                <div class="circular-meta">
+                                    <span>Issued by: <%= circular.issuedBy %></span>
+                                    <span><%= new Date(circular.issuedDate).toLocaleDateString() %></span>
+                                </div>
+                            </div>
+                            
+                            <div class="circular-content">
+                                <%= circular.content %>
+                            </div>
+                            
+                            <div class="circular-footer">
+                                <span class="audience-tag">
+                                    <i class="fas fa-users"></i> <%= circular.targetAudience %>
+                                </span>
+                                
+                                <div class="circular-actions">
+                                    <a href="/deleteCircular/<%= circular._id %>" onclick="return confirm('Are you sure you want to delete this circular?')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

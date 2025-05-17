@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | School Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f5f7fa;
+      color: #2d3748;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Content Area */
+    .content {
+      flex-grow: 1;
+      padding: 25px;
+      margin-left: 220px;
+    }
+
+    /* Header Area */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #3498db;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    /* Welcome Banner */
+    .welcome {
+      background: #3498db;
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .student-details {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .detail-item {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-size: 1.5rem;
+    }
+
+    .stat-attendance { background-color: #e3f2fd; color: #1976d2; }
+    .stat-tasks { background-color: #e8f5e9; color: #388e3c; }
+
+    .stat-content {
+      flex: 1;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    /* Main Sections */
+    .dashboard-sections {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-title i {
+      margin-right: 8px;
+      color: #3498db;
+    }
+
+    .task-item, .notice-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .task-title, .notice-title {
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .task-meta, .notice-date {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+
+    .view-all {
+      padding-top: 15px;
+      text-align: right;
+    }
+
+    .view-all a {
+      color: #3498db;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Circular Styles */
+    .dashboard-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .card-header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-action {
+      font-size: 14px;
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .circular-list {
+      padding: 15px 20px;
+    }
+
+    .circular-item {
+      background-color: #f8f9fa;
+      border-left: 3px solid #3498db;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .circular-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .circular-item:hover {
+      transform: translateX(3px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .circular-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+
+    .circular-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+    }
+
+    .circular-preview {
+      font-size: 14px;
+      color: #4a5568;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .circular-audience {
+      display: inline-block;
+      font-size: 12px;
+      background-color: #e3f2fd;
+      color: #3498db;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .no-data {
+      padding: 15px 20px;
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 70px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+      }
+      
+      .nav-links a {
+        justify-content: center;
+      }
+      
+      .content {
+        margin-left: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Student Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/student/dashboard" class="active"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/student/attendance"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="/student/assignments"><i class="fa-solid fa-book"></i> <span>Assignments</span></a>
+      <a href="/student/profile"><i class="fa-solid fa-user"></i> <span>Profile</span></a>
+      <a href="/student/logout"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <h1>Student Dashboard</h1>
+      <div class="user-info">
+        <div class="user-avatar">
+          <%= student.fname.charAt(0) %><%= student.lname.charAt(0) %>
+        </div>
+        <div class="user-name">
+          <%= student.fname %> <%= student.lname %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div class="welcome">
+      <h2>Welcome, <%= student.fname %>!</h2>
+      <div class="student-details">
+        <div class="detail-item">Class: <%= student.classInfo.name %>-<%= student.classInfo.section %></div>
+        <div class="detail-item">Roll Number: <%= student.rollNumber || 'Not assigned' %></div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon stat-attendance">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value"><%= studentStats.attendancePercentage %>%</div>
+          <div class="stat-label">Attendance</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon stat-tasks">
+          <i class="fas fa-tasks"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-value"><%= studentStats.pendingTasks %></div>
+          <div class="stat-label">Pending Tasks</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dashboard Sections -->
+    <div class="dashboard-sections">
+      <!-- Assignments Section -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-clipboard-list"></i>
+            Pending Assignments
+          </h3>
+        </div>
+        
+        <% if (pendingTasks && pendingTasks.length > 0) { %>
+          <% pendingTasks.slice(0, 3).forEach(task => { %>
+            <div class="task-item">
+              <div class="task-title"><%= task.title %></div>
+              <div class="task-meta">
+                Due: <%= new Date(task.dueDate).toLocaleDateString() %>
+                <% if (task.maxMarks) { %> • Max marks: <%= task.maxMarks %><% } %>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="task-item">
+            <div class="task-title">No pending assignments</div>
+            <div class="task-meta">You're all caught up!</div>
+          </div>
+        <% } %>
+        
+        <div class="view-all">
+          <a href="/student/assignments">View All Assignments →</a>
+        </div>
+      </div>
+      
+
+      <!-- Recent Circulars Section -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3><i class="fas fa-bullhorn"></i> Recent Circulars</h3>
+          <a href="/student/circulars" class="card-action">View All Circulars</a>
+        </div>
+        
+        <% if (recentCirculars && recentCirculars.length > 0) { %>
+          <div class="circular-list">
+            <% recentCirculars.forEach(circular => { %>
+              <div class="circular-item">
+                <div class="circular-title"><%= circular.title %></div>
+                <div class="circular-meta">
+                  <span>By: <%= circular.issuedBy %></span>
+                  <span><%= new Date(circular.issuedDate).toLocaleDateString() %></span>
+                </div>
+                <% if (circular.content) { %>
+                  <div class="circular-preview">
+                    <%= circular.content.length > 100 ? circular.content.substring(0, 100) + '...' : circular.content %>
+                  </div>
+                <% } %>
+                <div class="circular-audience">
+                  <i class="fas fa-users"></i> <%= circular.targetAudience || 'All' %>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-data">No recent circulars.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* Simple reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f6f8fa; /* Light gray with blue tint */
+    }
+
+    /* Sidebar styles */
+      .sidebar {
+        width: 220px;
+        background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+        color: white;
+        padding: 20px 0;
+        height: 100vh;
+        position: fixed;
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #ecf0f1;
+        font-weight: 600;
+        padding: 0 15px;
+      }
+
+      .sidebar hr {
+        border: none;
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .nav-links {
+        padding: 0 15px;
+      }
+
+      .nav-links a {
+        display: flex;
+        align-items: center;
+        color: #bdc3c7;
+        text-decoration: none;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      .nav-links a.active {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .nav-links i {
+        width: 20px;
+        margin-right: 10px;
+        font-size: 1.1rem;
+    }
+
+    /* Main content area */
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 220px;
+      overflow-y: auto;
+    }
+
+    .welcome {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db; /* Bright blue */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .account-icon {
+      width: 32px;
+      height: 32px;
+      background-color: #eaeaea;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .account-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Stats boxes */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .stat-box {
+      background-color: white;
+      border-radius: 8px;
+      padding: 24px;
+      width: 250px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      text-decoration: none;
+      color: inherit;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-box.primary {
+      background-color: #3498db; 
+      color: white;
+    }
+
+    .stat-box.success {
+      background-color: #27ae60; 
+      color: white;
+    }
+    
+    .stat-box.warning {
+      background-color: #f39c12; 
+      color: white;
+    }
+
+    .stat-box h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .stat-box p {
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .stat-box i {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 15px;
+      opacity: 0.8;
+    }
+
+    /* Dashboard cards */
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title i {
+      color: #3498db;
+    }
+
+    .card-action {
+      color: #3498db;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .card-action:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    /* Assigned Classes */
+    .class-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .class-card {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 3px solid #3498db;
+    }
+
+    .class-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .class-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .class-detail {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 3px;
+    }
+
+    .class-detail i {
+      width: 16px;
+      margin-right: 8px;
+      color: #3498db;
+    }
+
+    .class-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .class-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .view-btn {
+      background-color: #e3f2fd;
+      color: #3498db;
+    }
+
+    .view-btn:hover {
+      background-color: #bbdefb;
+    }
+
+    /* Recent Circulars */
+    .circular-item {
+      background-color: #f8f9fa;
+      border-left: 3px solid #3498db;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .circular-item:hover {
+      transform: translateX(3px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .circular-title {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+      font-size: 15px;
+    }
+
+    .circular-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-bottom: 8px;
+    }
+
+    .circular-preview {
+      font-size: 14px;
+      color: #4a5568;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .circular-audience {
+      display: inline-block;
+      font-size: 12px;
+      background-color: #e3f2fd;
+      color: #3498db;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .no-data {
+      padding: 15px;
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+    }
+
+    /* Simple responsive design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+      }
+      
+      .nav-links a {
+        text-align: center;
+        padding: 15px 0;
+      }
+      
+      .content {
+        margin-left: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Teacher Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/teacherdash"  class="active"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/teacher/classes"><i class="fa-solid fa-chalkboard-user"></i> <span>My Classes</span></a>
+      <a href="/teacher/tasks"><i class="fa-solid fa-clipboard-list"></i> <span>Tasks</span></a>
+      <a href="/teacher/profile"><i class="fa-solid fa-user"></i> <span>My Profile</span></a>
+      <a href="/teacher/logout"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="welcome">
+      <h3 style="margin: 0;">Welcome, <%= teacher.fname %> <%= teacher.lname %>!</h3>
+      <div class="account">
+        <div class="account-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="account-name"><%= teacher.fname || 'Teacher' %></span>
+      </div>
+    </div>
+    
+    <div class="stats">
+      <a href="#" class="stat-box primary">
+        <i class="fa-solid fa-user-graduate"></i>
+        <h2>Students</h2>
+        <p><%= studentCount %></p>
+      </a>
+      
+      <a href="#" class="stat-box warning">
+        <i class="fa-solid fa-chalkboard"></i>
+        <h2>Classes</h2>
+        <p><%= classCount %></p>
+      </a>
+    </div>
+
+    <!-- Assigned Classes Section -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-chalkboard-user"></i> Your Assigned Classes
+        </div>
+        <a href="/teacher/classes" class="card-action">View All Classes</a>
+      </div>
+      
+      <% if (assignedClasses && assignedClasses.length > 0) { %>
+        <div class="class-list">
+          <% assignedClasses.forEach(classItem => { %>
+            <div class="class-card">
+              <div class="class-name">Class <%= classItem.name %>-<%= classItem.section %></div>
+              <div class="class-detail">
+                <i class="fas fa-id-card"></i> ID: <%= classItem.classId %>
+              </div>
+              <div class="class-actions">
+                <a href="/showStudents" class="class-btn view-btn">
+                  <i class="fas fa-users"></i> View Students
+                </a>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="no-data">No classes assigned yet.</div>
+      <% } %>
+    </div>
+
+    <!-- Recent Circulars Section -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-bullhorn"></i> Recent Circulars
+        </div>
+        <a href="/teacher/circulars" class="card-action">View All Circulars</a>
+      </div>
+      
+      <% if (recentCirculars && recentCirculars.length > 0) { %>
+        <div class="circular-list">
+          <% recentCirculars.forEach(circular => { %>
+            <div class="circular-item">
+              <div class="circular-title"><%= circular.title %></div>
+              <div class="circular-meta">
+                <span>By: <%= circular.issuedBy %></span>
+                <span><%= new Date(circular.issuedDate).toLocaleDateString() %></span>
+              </div>
+              <% if (circular.content) { %>
+                <div class="circular-preview">
+                  <%= circular.content.length > 100 ? circular.content.substring(0, 100) + '...' : circular.content %>
+                </div>
+              <% } %>
+              <div class="circular-audience">
+                <i class="fas fa-users"></i> <%= circular.targetAudience || 'All' %>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="no-data">No recent circulars.</div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

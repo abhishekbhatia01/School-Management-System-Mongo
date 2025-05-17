@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Springfield Academy - School Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3182ce;
+            --primary-dark: #2c5282;
+            --secondary: #38b2ac;
+            --dark: #2d3748;
+            --light: #f8fafc;
+            --gray: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #e53e3e;
+            --radius: 10px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f8fafc;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Header styles with animated gradient */
+        .top-banner {
+            background: linear-gradient(-45deg, #1e3c72, #2a5298, #2980b9, #3498db);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .guest-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: 12px;
+            gap: 6px;
+        }
+
+        /* Hero section with parallax effect */
+        .hero {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            transform: translateZ(-10px) scale(2);
+            z-index: -1;
+            filter: brightness(0.7);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main content */
+        .main {
+            padding: 60px 0;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        /* Circular statistics with animation */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f6f9fc, #edf2f7);
+            position: relative;
+        }
+
+        .stat-circle::before {
+            content: '';
+            position: absolute;
+            width: calc(100% - 10px);
+            height: calc(100% - 10px);
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            border-top-color: transparent;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        /* Slick announcements and events */
+        .announcement {
+            padding: 25px;
+            border-radius: var(--radius);
+            background-color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .announcement:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .announcement::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: rgba(49, 130, 206, 0.05);
+            z-index: 0;
+        }
+
+        .announcement-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .announcement-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .announcement-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .announcement-content {
+            color: #4a5568;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced upcoming events */
+        .upcoming-events {
+            margin-top: 20px;
+        }
+
+        .event {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+        }
+
+        .event:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .event-date {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+
+        .event-date-day {
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .event-date-month {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .event-info {
+            flex-grow: 1;
+        }
+
+        .event-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .event-description {
+            color: var(--gray);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .event-details {
+            font-size: 14px;
+            color: var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .event-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .event-details span i {
+            color: var(--primary);
+        }
+
+        /* Faculty section */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .faculty-card {
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .faculty-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .faculty-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .faculty-card:hover .faculty-image img {
+            transform: scale(1.05);
+        }
+
+        .faculty-info {
+            padding: 20px;
+        }
+
+        .faculty-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .faculty-position {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .faculty-desc {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Gallery section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            height: 200px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .testimonial {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .testimonial-quote {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            font-size: 50px;
+            color: rgba(49, 130, 206, 0.2);
+            position: absolute;
+            left: 0;
+            top: -15px;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h4 {
+            color: var(--dark);
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .testimonial-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Contact info with map */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-card {
+            padding: 25px;
+            border-radius: var(--radius);
+            background-color: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-card h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-card h3 i {
+            color: var(--primary);
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            color: var(--gray);
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            min-width: 16px;
+            margin-top: 4px;
+        }
+
+        .contact-item a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        .map-container {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Footer with social links */
+        .footer {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: #cbd5e0;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-links a i {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .hero {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .faculty-grid, 
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid, 
+            .faculty-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .event {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .event-details {
+                justify-content: center;
+            }
+            
+            .testimonials {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top navigation bar -->
+    <div class="top-banner">
+        <div class="container">
+            <div class="header">
+                <h1>Springfield Academy <span class="guest-badge"><i class="fas fa-user"></i> Guest Portal</span></h1>
+                <div class="header-actions">
+                    <a href="/login" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="/" class="btn btn-outline">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero section with school image -->
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h2>Welcome to Springfield Academy</h2>
+            <p>Nurturing minds, inspiring futures. Our mission is to provide quality education that empowers students to realize their full potential and become responsible global citizens.</p>
+            <a href="#contact" class="btn btn-primary">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main">
+        <div class="container">
+            <!-- Announcements section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-bullhorn"></i> Latest Announcements</h2>
+                </div>
+
+                <div class="announcement">
+                    <h3 class="announcement-title">Annual Sports Day Announcement</h3>
+                    <div class="announcement-meta">
+                        <span><i class="far fa-calendar"></i> May 20, 2025</span>
+                        <span><i class="fas fa-user"></i> Principal</span>
+                    </div>
+                    <div class="announcement-content">
+                        <p>We are excited to announce that our Annual Sports Day will be held on June 15, 2025. All students are encouraged to participate in various sports activities. Parents are cordially invited to attend and cheer for their children.</p>
+                    </div>
+                </div>
+
+                <div class="announcement">
+                    <h3 class="announcement-title">School Infrastructure Upgrades</h3>
+                    <div class="announcement-meta">
+                        <span><i class="far fa-calendar"></i> May 10, 2025</span>
+                        <span><i class="fas fa-user"></i> Administration</span>
+                    </div>
+                    <div class="announcement-content">
+                        <p>We are pleased to inform you that the school will be undergoing infrastructure upgrades starting next month. This includes renovation of the science laboratories and installation of smart boards in all classrooms to enhance the learning experience.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- School statistics -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-chart-pie"></i> School at a Glance</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-circle">
+                            <div class="stat-value">850+</div>
+                        </div>
+                        <div class="stat-label">Students Enrolled</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-circle">
+                            <div class="stat-value">45+</div>
+                        </div>
+                        <div class="stat-label">Dedicated Teachers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-circle">
+                            <div class="stat-value">25+</div>
+                        </div>
+                        <div class="stat-label">Modern Classrooms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-circle">
+                            <div class="stat-value">98%</div>
+                        </div>
+                        <div class="stat-label">Graduation Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming events -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Upcoming Events</h2>
+                </div>
+
+                <div class="upcoming-events">
+                    <div class="event">
+                        <div class="event-date">
+                            <div class="event-date-day">15</div>
+                            <div class="event-date-month">JUN</div>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Annual Sports Day</div>
+                            <div class="event-description">Join us for a day of athletic competitions, team sports, and celebration of physical fitness.</div>
+                            <div class="event-details">
+                                <span><i class="far fa-clock"></i> 9:00 AM - 4:00 PM</span>
+                                <span><i class="fas fa-map-marker-alt"></i> School Grounds</span>
+                                <span><i class="fas fa-users"></i> All Students & Parents</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="event">
+                        <div class="event-date">
+                            <div class="event-date-day">22</div>
+                            <div class="event-date-month">JUN</div>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Parent-Teacher Meeting</div>
+                            <div class="event-description">Discuss your child's academic progress and get insights from teachers on areas of improvement.</div>
+                            <div class="event-details">
+                                <span><i class="far fa-clock"></i> 10:00 AM - 1:00 PM</span>
+                                <span><i class="fas fa-map-marker-alt"></i> School Auditorium</span>
+                                <span><i class="fas fa-users"></i> Parents</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="event">
+                        <div class="event-date">
+                            <div class="event-date-day">10</div>
+                            <div class="event-date-month">JUL</div>
+                        </div>
+                        <div class="event-info">
+                            <div class="event-title">Science Exhibition</div>
+                            <div class="event-description">Witness innovative science projects created by our talented students showcasing their understanding of scientific concepts.</div>
+                            <div class="event-details">
+                                <span><i class="far fa-clock"></i> 11:00 AM - 3:00 PM</span>
+                                <span><i class="fas fa-map-marker-alt"></i> School Hall</span>
+                                <span><i class="fas fa-users"></i> Open to Public</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Faculty section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> Our Faculty</h2>
+                </div>
+
+                <div class="faculty-grid">
+                    <div class="faculty-card">
+                        <div class="faculty-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Robert Johnson">
+                        </div>
+                        <div class="faculty-info">
+                            <h3 class="faculty-name">Dr. Robert Johnson</h3>
+                            <div class="faculty-position">Principal</div>
+                            <p class="faculty-desc">With over 20 years of experience in education, Dr. Johnson leads our institution with dedication and vision.</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-card">
+                        <div class="faculty-image">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Sarah Williams">
+                        </div>
+                        <div class="faculty-info">
+                            <h3 class="faculty-name">Dr. Sarah Williams</h3>
+                            <div class="faculty-position">Science Department Head</div>
+                            <p class="faculty-desc">A Ph.D. in Physics, Dr. Williams brings passion and expertise to our science curriculum.</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-card">
+                        <div class="faculty-image">
+                            <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Prof. Michael Chen">
+                        </div>
+                        <div class="faculty-info">
+                            <h3 class="faculty-name">Prof. Michael Chen</h3>
+                            <div class="faculty-position">Mathematics Department</div>
+                            <p class="faculty-desc">Known for making complex mathematical concepts accessible and engaging for students.</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-card">
+                        <div class="faculty-image">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ms. Emily Rodriguez">
+                        </div>
+                        <div class="faculty-info">
+                            <h3 class="faculty-name">Ms. Emily Rodriguez</h3>
+                            <div class="faculty-position">Arts & Music</div>
+                            <p class="faculty-desc">A talented artist and musician who inspires creativity in our students.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-images"></i> School Gallery</h2>
+                </div>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3" alt="Science Lab">
+                        <div class="gallery-caption">Our state-of-the-art science laboratory</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3" alt="Library">
+                        <div class="gallery-caption">Modern library with extensive collection</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1581078426770-6d336e5de7bf?ixlib=rb-4.0.3" alt="Sports">
+                        <div class="gallery-caption">Annual sports day celebration</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1564981797816-1043664bf78d?ixlib=rb-4.0.3" alt="Graduation">
+                        <div class="gallery-caption">Graduation ceremony 2024</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-quote-left"></i> What People Say</h2>
+                </div>
+
+                <div class="testimonials">
+                    <div class="testimonial">
+                        <div class="testimonial-quote">
+                            The teachers at Springfield Academy are exceptional. My daughter has flourished academically and developed confidence under their guidance. The personalized attention given to each student is remarkable.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Jennifer P.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Jennifer P.</h4>
+                                <p>Parent</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-quote">
+                            As an alumnus, I can attest to the quality education provided by Springfield Academy. The values and skills I learned here have been instrumental in my professional success and personal growth.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="David T.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>David T.</h4>
+                                <p>Former Student, Class of 2018</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-quote">
+                            The extracurricular activities and sports programs offered here are excellent. My son has developed leadership skills and teamwork through these opportunities, complementing his academic achievements.
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Thomas R.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Thomas R.</h4>
+                                <p>Parent</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact section -->
+            <div class="section" id="contact">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-phone-alt"></i> Contact Us</h2>
+                </div>
+
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <h3><i class="fas fa-info-circle"></i> General Information</h3>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <p>Phone: +1 (123) 456-7890</p>
+                                    <p>Fax: +1 (123) 456-7891</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <a href="mailto:info@springfieldacademy.edu">info@springfieldacademy.edu</a>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <p>123 Education Street</p>
+                                    <p>Springfield, ST 12345</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <h3><i class="fas fa-clock"></i> Office Hours</h3>
+                            <div class="contact-item">
+                                <i class="fas fa-calendar-day"></i>
+                                <div>
+                                    <p>Monday - Friday: 8:00 AM - 4:00 PM</p>
+                                    <p>Saturday: 9:00 AM - 12:00 PM (Admissions only)</p>
+                                    <p>Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.678901234567!2d-73.98765432109876!3d40.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDA3JzI0LjQiTiA3M8KwNTknMTUuNiJX!5e0!3m2!1sen!2sus!4v1621234567890!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Springfield Academy</h3>
+                    <p>Nurturing minds, inspiring futures since 1985. Our school is dedicated to providing quality education in a supportive environment.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-right"></i> About Us</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Admissions</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Academic Programs</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Campus Facilities</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> News & Events</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Helpful Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="/login"><i class="fas fa-angle-right"></i> Student Portal</a></li>
+                        <li><a href="/login"><i class="fas fa-angle-right"></i> Staff Portal</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Academic Calendar</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Library Catalog</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> Career Opportunities</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Get In Touch</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-phone"></i> +1 (123) 456-7890</a></li>
+                        <li><a href="mailto:info@springfieldacademy.edu"><i class="fas fa-envelope"></i> info@springfieldacademy.edu</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Education Street, Springfield, ST 12345</a></li>
+                        <li><a href="#contact"><i class="fas fa-paper-plane"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Springfield Academy. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Cookie Policy</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

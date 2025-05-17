@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f5f7fa;
+      color: #2d3748;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+      transition: all 0.3s ease;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Content Area */
+    .content {
+      flex-grow: 1;
+      padding: 25px;
+      margin-left: 220px;
+      width: calc(100% - 220px);
+    }
+
+    /* Welcome Banner */
+    .welcome {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+    }
+
+    .welcome h3 {
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .welcome p {
+      color: #7f8c8d;
+    }
+
+    /* Profile Card */
+    .profile-section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 25px;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #3498db, #2c3e50);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .profile-title {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .profile-edit {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .profile-edit:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .profile-body {
+      padding: 25px;
+    }
+
+    .info-section {
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .section-title i {
+      color: #3498db;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .info-item {
+      margin-bottom: 15px;
+    }
+
+    .info-label {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 1.5rem;
+    }
+
+    .stat-classes {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .stat-students {
+      background-color: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .stat-attendance {
+      background-color: #fff3e0;
+      color: #f57c00;
+    }
+
+    .stat-tasks {
+      background-color: #f3e5f5;
+      color: #8e24aa;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+    }
+
+    /* Edit Profile Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 25px;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .close-modal {
+      font-size: 1.5rem;
+      color: #7f8c8d;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .close-modal:hover {
+      color: #2c3e50;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .form-submit {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 70px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+      }
+      
+      .nav-links a {
+        justify-content: center;
+      }
+      
+      .content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Teacher Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/teacherdash"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/teacher/classes"><i class="fa-solid fa-chalkboard-user"></i> <span>My Classes</span></a>
+      <a href="/teacher/tasks"><i class="fa-solid fa-clipboard-list"></i> <span>Tasks</span></a>
+      <a href="/teacher/profile" class="active"><i class="fa-solid fa-user"></i> <span>My Profile</span></a>
+      <a href="/teacher/logout"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="welcome">
+      <h3>My Profile</h3>
+      <p>View your personal information</p>
+    </div>
+
+    <!-- Profile Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon stat-classes">
+          <i class="fas fa-chalkboard"></i>
+        </div>
+        <div class="stat-value"><%= teacherStats.classCount %></div>
+        <div class="stat-label">Classes</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon stat-students">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <div class="stat-value"><%= teacherStats.studentCount %></div>
+        <div class="stat-label">Students</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon stat-attendance">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-value"><%= teacherStats.attendanceCount %></div>
+        <div class="stat-label">Attendance Records</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon stat-tasks">
+          <i class="fas fa-clipboard-list"></i>
+        </div>
+        <div class="stat-value"><%= teacherStats.taskCount %></div>
+        <div class="stat-label">Tasks Created</div>
+      </div>
+    </div>
+
+    <!-- Main Profile Card -->
+    <div class="profile-section">
+      <div class="profile-header">
+        <h2 class="profile-name"><%= teacher.fname %> <%= teacher.lname %></h2>
+        <p class="profile-title"><%= teacher.subject || 'Teacher' %></p>
+      </div>
+      
+      <div class="profile-body">
+        <!-- Personal Information -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-user"></i> Personal Information
+          </h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Full Name</div>
+              <div class="info-value"><%= teacher.fname %> <%= teacher.lname %></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Age</div>
+              <div class="info-value"><%= teacher.age || 'Not provided' %></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Mobile Number</div>
+              <div class="info-value"><%= teacher.mobno || 'Not provided' %></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Professional Information -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-briefcase"></i> Professional Information
+          </h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Joining Date</div>
+              <div class="info-value"><%= teacher.jdate ? new Date(teacher.jdate).toLocaleDateString() : 'Not provided' %></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Qualification</div>
+              <div class="info-value"><%= teacher.qualification || 'Not provided' %></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Subject</div>
+              <div class="info-value"><%= teacher.subject || 'Not provided' %></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account Information (Auto-generated) -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-user-circle"></i> Account Information
+          </h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Username</div>
+              <div class="info-value"><%= teacher.fname.charAt(0).toLowerCase() + teacher.lname.toLowerCase() + teacher.mobno.slice(-4) %></div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-label">Email</div>
+              <div class="info-value"><%= teacher.fname.charAt(0).toLowerCase() + teacher.lname.toLowerCase() + teacher.mobno.slice(-4) %>@school.com</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // If you need any JavaScript for this page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Profile page loaded');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f6f8fa;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Main content area */
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 220px;
+      overflow-y: auto;
+      width: calc(100% - 220px);
+    }
+
+    /* Welcome section */
+    .welcome {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .welcome h3 {
+      color: #2c3e50;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      color: #7f8c8d;
+    }
+
+    .account-icon {
+      width: 32px;
+      height: 32px;
+      background-color: #f1f1f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      color: #2c3e50;
+    }
+
+    .account-name {
+      font-weight: 500;
+    }
+
+    /* Dashboard Statistics */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .stat-box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-box i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .stat-box h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: #7f8c8d;
+    }
+
+    .stat-box p {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    /* Stat box colors */
+    .stat-box.primary {
+      border-left: 5px solid #3498db;
+    }
+
+    .stat-box.primary i {
+      color: #3498db;
+    }
+
+    .stat-box.success {
+      border-left: 5px solid #27ae60;
+    }
+
+    .stat-box.success i {
+      color: #27ae60;
+    }
+
+    .stat-box.warning {
+      border-left: 5px solid #f39c12;
+    }
+
+    .stat-box.warning i {
+      color: #f39c12;
+    }
+
+    .stat-box.danger {
+      border-left: 5px solid #e74c3c;
+    }
+
+    .stat-box.danger i {
+      color: #e74c3c;
+    }
+
+    /* Dashboard cards */
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 25px;
+      margin-top: 30px;
+      display: flex;
+      align-items: flex-start;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-left: 5px solid #3498db;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon {
+      background-color: #ecf0f1;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .card-icon i {
+      font-size: 24px;
+      color: #3498db;
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card-content h3 {
+      color: #2c3e50;
+      margin-bottom: 5px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .card-content p {
+      color: #7f8c8d;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+
+    /* Button styles */
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-success {
+      background-color: #27ae60;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #219653;
+    }
+
+    /* Recent circulars */
+    .recent-circulars-list {
+      margin: 15px 0;
+    }
+
+    .circular-item {
+      background-color: #f8f9fa;
+      border-left: 3px solid #3498db;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .circular-item:hover {
+      transform: translateX(3px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .circular-title {
+      font-weight: 500;
+      color: #2c3e50;
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    .circular-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+
+    .circular-preview {
+      font-size: 0.9rem;
+      color: #4a5568;
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .circular-audience {
+      margin-top: 5px;
+    }
+
+    .audience-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background-color: #edf2f7;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: #4a5568;
+    }
+
+    .audience-tag i {
+      margin-right: 4px;
+      font-size: 0.7rem;
+    }
+
+    .no-circulars {
+      color: #7f8c8d;
+      font-style: italic;
+      padding: 10px 0;
+    }
+
+    /* Animation for new circulars */
+    @keyframes highlight {
+      0% { background-color: #fff8e1; }
+      100% { background-color: #f8f9fa; }
+    }
+
+    .circular-item:first-child {
+      animation: highlight 2s ease-in-out;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+      }
+      
+      .nav-links a {
+        text-align: center;
+        padding: 15px 0;
+        justify-content: center;
+      }
+      
+      .content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      
+      .welcome {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .dashboard-card {
+        flex-direction: column;
+      }
+      
+      .card-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .circular-meta {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>School Management</h2>
+    <hr>
+    <div class="nav-links">
+          <a href="/admin" class="active"><i class="fa-solid fa-gauge-high"></i> <span>Home</span></a>
+          <a href="/student"><i class="fa-solid fa-user"></i> <span>Students</span></a>
+          <a href="/teacher"><i class="fa-solid fa-person-chalkboard"></i> <span>Teachers</span></a>
+          <a href="/class"><i class="fa-solid fa-chalkboard-user"></i> <span>Class</span></a>
+          <a href="/showCirculars"><i class="fa-solid fa-note-sticky"></i> <span>Circular</span></a>
+          <a href="/admin-out"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+        </div>
+  </div>
+
+  <div class="content">
+    <div class="welcome">
+      <h3>Welcome, Admin</h3>
+      <div class="account">
+        <div class="account-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <span class="account-name">Admin</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <a href="/showStudents" class="stat-box primary">
+        <i class="fa-solid fa-user-graduate"></i>
+        <h2>Total Students</h2>
+        <p><%= studentCount %></p>
+      </a>
+
+      <a href="/showteacher" class="stat-box success">
+        <i class="fa-solid fa-chalkboard-teacher"></i>
+        <h2>Total Teachers</h2>
+        <p><%= teacherCount %></p>
+      </a>
+      
+      <a href="/showClass" class="stat-box warning">
+        <i class="fa-solid fa-chalkboard"></i>
+        <h2>Total Classes</h2>
+        <p><%= classCount %></p>
+      </a>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="card-icon">
+        <i class="fas fa-bullhorn"></i>
+      </div>
+      <div class="card-content">
+        <h3>Circulars</h3>
+        <p>Create and manage school announcements</p>
+        <div class="card-actions">
+          <a href="/showCirculars" class="btn btn-primary">
+            <i class="fas fa-clipboard-list"></i> Manage Circulars
+          </a>
+          <a href="/addCircular" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Circular
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Circulars Card -->
+    <div class="dashboard-card recent-circulars">
+      <div class="card-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="card-content">
+        <h3>Recent Circulars</h3>
+        
+        <% if (typeof recentCirculars !== 'undefined' && recentCirculars.length > 0) { %>
+          <div class="recent-circulars-list">
+            <% recentCirculars.forEach(circular => { %>
+              <div class="circular-item">
+                <div class="circular-title"><%= circular.title %></div>
+                <div class="circular-meta">
+                  <span class="issued-by">By: <%= circular.issuedBy %></span>
+                  <span class="issued-date"><%= new Date(circular.issuedDate).toLocaleDateString() %></span>
+                </div>
+                <% if (circular.content) { %>
+                  <div class="circular-preview">
+                    <%= circular.content.length > 80 ? circular.content.substring(0, 80) + '...' : circular.content %>
+                  </div>
+                <% } %>
+                <div class="circular-audience">
+                  <span class="audience-tag"><i class="fas fa-users"></i> <%= circular.targetAudience || 'All' %></span>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <p class="no-circulars">No recent circulars found.</p>
+        <% } %>
+        
+        <div class="card-actions">
+          <a href="/showCirculars" class="btn btn-primary">
+            <i class="fas fa-clipboard-list"></i> View All Circulars
+          </a>
+          <a href="/addCircular" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New Circular
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+``` 

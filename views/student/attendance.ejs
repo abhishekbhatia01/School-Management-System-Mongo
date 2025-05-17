@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance | Student Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+
+    /* Enhanced sidebar */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Enhanced content area */
+    .content {
+      flex: 1;
+      padding: 20px;
+      margin-left: 220px;
+      width: calc(100% - 220px);
+    }
+
+    .header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header h2 {
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Enhanced summary cards */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      border-top: 4px solid #e0e0e0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .summary-card:nth-child(1) {
+      border-top-color: #3498db;
+    }
+
+    .summary-card:nth-child(2) {
+      border-top-color: #2ecc71;
+    }
+
+    .summary-card:nth-child(3) {
+      border-top-color: #e74c3c;
+    }
+
+    .summary-card:nth-child(4) {
+      border-top-color: #9b59b6;
+    }
+
+    .summary-card h3 {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-card p {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .percentage-good {
+      color: #16a34a;
+      text-shadow: 0 0 1px rgba(22, 163, 74, 0.2);
+    }
+
+    .percentage-warning {
+      color: #ea580c;
+      text-shadow: 0 0 1px rgba(234, 88, 12, 0.2);
+    }
+
+    .percentage-bad {
+      color: #dc2626;
+      text-shadow: 0 0 1px rgba(220, 38, 38, 0.2);
+    }
+
+    /* Enhanced month selector */
+    .month-selector {
+      display: flex;
+      margin: 20px 0;
+      align-items: center;
+      background-color: white;
+      padding: 12px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .month-selector label {
+      font-weight: 500;
+      margin-right: 10px;
+      color: #475569;
+    }
+
+    .month-selector select {
+      padding: 8px 12px;
+      border-radius: 5px;
+      border: 2px solid #e2e8f0;
+      background-color: #f8fafc;
+      margin-left: 10px;
+      color: #334155;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .month-selector select:hover, .month-selector select:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Enhanced table */
+    .attendance-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .attendance-table th {
+      background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+      padding: 14px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #334155;
+      border-bottom: 2px solid #e2e8f0;
+      letter-spacing: 0.3px;
+    }
+
+    .attendance-table td {
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #475569;
+    }
+
+    .attendance-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .attendance-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-present {
+      background: linear-gradient(to right, #dcfce7, #bbf7d0);
+      color: #166534;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status-absent {
+      background: linear-gradient(to right, #fee2e2, #fecaca);
+      color: #b91c1c;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+      }
+      
+      .nav-links a {
+        text-align: center;
+        padding: 15px 0;
+        justify-content: center;
+      }
+      
+      .content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      
+      .summary-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Sidebar -->
+  <div class="sidebar">
+    <h2>Student Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/student/dashboard"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/student/attendance" class="active"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="/student/assignments"><i class="fas fa-book"></i> <span>Assignments</span></a>
+      <a href="/student/profile"><i class="fas fa-user"></i> <span>Profile</span></a>
+      <a href="/student/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
+      <h2>My Attendance</h2>
+      <div><%= student.fname %> <%= student.lname %></div>
+    </div>
+
+    <!-- Attendance Summary -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <h3>Attendance Rate</h3>
+        <p class="<%= attendanceData.percentage >= 90 ? 'percentage-good' : attendanceData.percentage >= 75 ? 'percentage-warning' : 'percentage-bad' %>">
+          <%= attendanceData.percentage %>%
+        </p>
+      </div>
+      <div class="summary-card">
+        <h3>Present Days</h3>
+        <p><%= attendanceData.presentDays %></p>
+      </div>
+      <div class="summary-card">
+        <h3>Absent Days</h3>
+        <p><%= attendanceData.absentDays %></p>
+      </div>
+      <div class="summary-card">
+        <h3>Total School Days</h3>
+        <p><%= attendanceData.totalDays %></p>
+      </div>
+    </div>
+
+    <!-- Month Selector -->
+    <div class="month-selector">
+      <label for="month">Select Month:</label>
+      <select id="month" onchange="changeMonth(this.value)">
+        <option value="all" <%= selectedMonth === 'all' ? 'selected' : '' %>>All Months</option>
+        <option value="1" <%= selectedMonth === '1' ? 'selected' : '' %>>January</option>
+        <option value="2" <%= selectedMonth === '2' ? 'selected' : '' %>>February</option>
+        <option value="3" <%= selectedMonth === '3' ? 'selected' : '' %>>March</option>
+        <option value="4" <%= selectedMonth === '4' ? 'selected' : '' %>>April</option>
+        <option value="5" <%= selectedMonth === '5' ? 'selected' : '' %>>May</option>
+        <option value="6" <%= selectedMonth === '6' ? 'selected' : '' %>>June</option>
+        <option value="7" <%= selectedMonth === '7' ? 'selected' : '' %>>July</option>
+        <option value="8" <%= selectedMonth === '8' ? 'selected' : '' %>>August</option>
+        <option value="9" <%= selectedMonth === '9' ? 'selected' : '' %>>September</option>
+        <option value="10" <%= selectedMonth === '10' ? 'selected' : '' %>>October</option>
+        <option value="11" <%= selectedMonth === '11' ? 'selected' : '' %>>November</option>
+        <option value="12" <%= selectedMonth === '12' ? 'selected' : '' %>>December</option>
+      </select>
+    </div>
+
+    <!-- Attendance Records Table -->
+    <table class="attendance-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Day</th>
+          <th>Status</th>
+          <th>Marked By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (attendanceRecords && attendanceRecords.length > 0) { %>
+          <% attendanceRecords.forEach(record => { %>
+            <tr>
+              <td><%= new Date(record.date).toLocaleDateString() %></td>
+              <td><%= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(record.date).getDay()] %></td>
+              <td>
+                <span class="<%= record.status === 'present' ? 'status-present' : 'status-absent' %>">
+                  <%= record.status === 'present' ? 'Present' : 'Absent' %>
+                </span>
+              </td>
+              <td><%= record.teacherName || 'Class Teacher' %></td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 20px; color: #6b7280;">No attendance records found for the selected period.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    function changeMonth(month) {
+      window.location.href = `/student/attendance?month=${month}`;
+    }
+  </script>
+</body>
+</html>

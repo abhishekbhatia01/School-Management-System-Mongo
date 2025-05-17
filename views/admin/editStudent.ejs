@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for better maintainability */
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --success-color: #2ecc71;
+            --success-dark: #27ae60;
+            --cancel-color: #95a5a6;
+            --cancel-dark: #7f8c8d;
+            --error-color: #e74c3c;
+            --text-color: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --bg-color: #f0f5f9;
+            --border-color: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --input-shadow: rgba(52, 152, 219, 0.25);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        /* Container & Layout */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 600;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 15px;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 15px;
+        }
+
+        input, 
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        input:hover, 
+        select:hover {
+            border-color: var(--primary-color);
+        }
+
+        input:focus, 
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--input-shadow);
+        }
+        
+        /* Form Validation */
+        input:required:invalid,
+        select:required:invalid {
+            border-color: var(--error-color);
+        }
+
+        input:required:valid,
+        select:required:valid {
+            border-color: var(--success-color);
+        }
+
+        /* Error Message */
+        .error-message {
+            background-color: #fff8f8;
+            color: var(--error-color);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            font-size: 15px;
+            border-left: 4px solid var(--error-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .error-message i {
+            font-size: 20px;
+        }
+
+        /* Action Buttons */
+        .actions {
+            margin-top: 35px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            min-width: 120px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-cancel {
+            background-color: var(--cancel-color);
+        }
+        
+        .btn-cancel:hover {
+            background-color: var(--cancel-dark);
+        }
+        
+        .btn-update {
+            background-color: var(--success-color);
+        }
+        
+        .btn-update:hover {
+            background-color: var(--success-dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                margin: 20px auto;
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Student</h1>
+        
+        <% if (error) { %>
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <%= error %>
+            </div>
+        <% } %>
+        
+        <form action="/editStudent/<%= student._id %>" method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" name="fname" value="<%= student.fname %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" name="lname" value="<%= student.lname %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="<%= student.email %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mobno">Mobile Number</label>
+                    <input type="text" id="mobno" name="mobno" value="<%= student.mobno %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="Male" <%= student.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                        <option value="Female" <%= student.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                        <option value="Other" <%= student.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" value="<%= student.age %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" value="<%= student.address || '' %>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="classId">Class</label>
+                    <select id="classId" name="classId" required>
+                        <% classes.forEach(cls => { %>
+                            <option value="<%= cls._id %>" <%= student.classId && student.classId.toString() === cls._id.toString() ? 'selected' : '' %>>
+                                <%= cls.name %>-<%= cls.section %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rollNumber">Roll Number</label>
+                    <input type="text" id="rollNumber" name="rollNumber" value="<%= student.rollNumber || '' %>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="fathername">Father's Name</label>
+                    <input type="text" id="fathername" name="fathername" value="<%= student.fathername || '' %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="batch">Batch</label>
+                    <input type="text" id="batch" name="batch" value="<%= student.batch || '' %>" required>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <a href="/showStudents" class="btn btn-cancel">Cancel</a>
+                <button type="submit" class="btn btn-update">Update Student</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

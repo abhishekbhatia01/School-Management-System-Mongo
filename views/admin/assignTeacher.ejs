@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Teacher to Class</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Reuse the same styles as in student.ejs */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+          display: flex;
+          height: 100vh;
+          background-color: #f6f8fa;
+        }
+        
+        /* Main content area */
+        .content {
+          flex-grow: 1;
+          padding: 25px;
+          margin-left: 220px;
+        }
+        
+        .container {
+          background-color: white;
+          border-radius: 10px;
+          padding: 25px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+        
+        /* Headings */
+        h1 {
+          color: #2c3e50;
+          margin-bottom: 25px;
+          font-weight: 600;
+          font-size: 1.8rem;
+        }
+        
+        h2 {
+          color: #2c3e50;
+          margin: 30px 0 15px;
+          font-size: 1.4rem;
+          font-weight: 500;
+        }
+
+        /* Form styles */
+        .form-container {
+          max-width: 700px;
+          margin: 0 auto;
+        }
+        
+        .form-group {
+          margin-bottom: 20px;
+        }
+        
+        .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          color: #2c3e50;
+        }
+        
+        .form-group select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 1rem;
+        }
+        
+        .button-group {
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
+        }
+        
+        .btn-primary, .btn-secondary {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+          background-color: #3498db;
+          color: white;
+        }
+        
+        .btn-secondary {
+          background-color: #95a5a6;
+          color: white;
+        }
+        
+        .btn-primary:hover {
+          background-color: #2980b9;
+        }
+        
+        .btn-secondary:hover {
+          background-color: #7f8c8d;
+        }
+        
+        /* Alert styling */
+        .alert {
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 4px;
+        }
+        
+        .alert-danger {
+          background-color: #f8d7da;
+          color: #721c24;
+          border-left: 4px solid #dc3545;
+        }
+        
+        .alert-success {
+          background-color: #d4edda;
+          color: #155724;
+          border-left: 4px solid #28a745;
+        }
+        
+        /* Class info card */
+        .class-info {
+          background-color: #f8f9fa;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 20px;
+          border-left: 4px solid #3498db;
+        }
+        
+        .class-info h3 {
+          margin-bottom: 10px;
+          color: #2c3e50;
+        }
+        
+        .class-info p {
+          color: #7f8c8d;
+          margin-bottom: 5px;
+        }
+        
+        .current-teacher {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 15px;
+          padding-top: 15px;
+          border-top: 1px solid #eee;
+        }
+        
+        .teacher-avatar {
+          width: 40px;
+          height: 40px;
+          background-color: #3498db;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 500;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+          body {
+            flex-direction: column;
+          }
+          
+          .sidebar {
+            width: 60px;
+            height: 100vh;
+          }
+          
+          .content {
+            margin-left: 60px;
+          }
+          
+          .sidebar h2, .nav-links a span {
+            display: none;
+          }
+          
+          .nav-links i {
+            margin-right: 0;
+          }
+          
+          .nav-links a {
+            text-align: center;
+            padding: 15px 0;
+          }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="container">
+            <h1>Assign Teacher to Class</h1>
+            
+            <div class="class-info">
+                <h3>Class <%= classObj.name %> - Section <%= classObj.section %></h3>
+                
+                <% if (classObj.teacher) { %>
+                    <div class="current-teacher">
+                        <div class="teacher-avatar">
+                            <% if (classObj.teacher.name) { %>
+                                <%= classObj.teacher.name.charAt(0) %>
+                            <% } else if (classObj.teacher.fname) { %>
+                                <%= classObj.teacher.fname.charAt(0) %>
+                            <% } else { %>
+                                T
+                            <% } %>
+                        </div>
+                        <div>
+                            <p><strong>Current Teacher:</strong> 
+                                <% if (classObj.teacher.name) { %>
+                                    <%= classObj.teacher.name %>
+                                <% } else if (classObj.teacher.fname && classObj.teacher.lname) { %>
+                                    <%= classObj.teacher.fname %> <%= classObj.teacher.lname %>
+                                <% } else if (classObj.teacher.fname) { %>
+                                    <%= classObj.teacher.fname %>
+                                <% } else { %>
+                                    Unknown Name
+                                <% } %>
+                            </p>
+                            <p><small>
+                                <%= classObj.teacher.qualification || 'No qualification' %> 
+                                <%= classObj.teacher.subject ? ' | ' + classObj.teacher.subject : '' %>
+                            </small></p>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <p><em>No teacher currently assigned to this class.</em></p>
+                <% } %>
+            </div>
+            
+            <% if (success) { %>
+                <div class="alert alert-success">
+                    Teacher successfully assigned to the class!
+                </div>
+            <% } %>
+            
+            <% if (error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <div class="form-container">
+                <form action="/assignTeacher/<%= classObj._id %>" method="POST">
+                    <div class="form-group">
+                        <label for="teacherId">Select Teacher:</label>
+                        <select id="teacherId" name="teacherId" required>
+                            <option value="">-- Select a Teacher --</option>
+                            <% teachers.forEach(teacher => { %>
+                                <option value="<%= teacher._id %>" 
+                                    <%= classObj.teacher && classObj.teacher._id && classObj.teacher._id.equals(teacher._id) ? 'selected' : '' %>>
+                                    <%= teacher.name || (teacher.fname + ' ' + (teacher.lname || '')) %> 
+                                    (<%= teacher.qualification || 'No qualification' %>, <%= teacher.subject || 'No subject' %>)
+                                </option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-user-check"></i> Assign Teacher
+                        </button>
+                        <a href="/showClass" class="btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Classes
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

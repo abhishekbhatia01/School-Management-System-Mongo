@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - School Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        /* Increased container size */
+        .login-container {
+            background: white;
+            padding: 50px; /* Increased padding */
+            border-radius: 15px; /* Slightly larger radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            width: 100%;
+            max-width: 480px; /* Increased from 400px */
+            position: relative;
+        }
+
+        /* Larger header text */
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px; /* Increased margin */
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 34px; /* Increased from 28px */
+            margin-bottom: 12px;
+            font-weight: 700; /* Made font weight bolder */
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 16px; /* Increased from 14px */
+        }
+
+        /* Larger form elements */
+        .form-group {
+            margin-bottom: 25px; /* Increased spacing */
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 18px; /* Adjusted positioning */
+            top: 19px; /* Adjusted positioning */
+            color: #007bff;
+            font-size: 20px; /* Increased icon size */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 16px 16px 55px; /* Increased padding */
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Slightly larger radius */
+            font-size: 18px; /* Increased font size */
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1); /* Larger focus glow */
+        }
+
+        .form-control::placeholder {
+            color: #999;
+            font-size: 18px; /* Increased placeholder size */
+        }
+
+        .error-message {
+            background-color: #fff3f3;
+            color: #dc3545;
+            padding: 16px; /* Increased padding */
+            border-radius: 10px; /* Slightly larger radius */
+            margin-bottom: 25px; /* Increased margin */
+            border: 1px solid #ffcdd2;
+            font-size: 16px; /* Increased font size */
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Increased gap */
+        }
+
+        .error-message i {
+            font-size: 20px; /* Increased icon size */
+        }
+
+        /* Larger button */
+        .login-btn {
+            width: 100%;
+            padding: 16px; /* Increased padding */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px; /* Slightly larger radius */
+            font-size: 18px; /* Increased font size */
+            font-weight: 600; /* Made text bolder */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Increased gap */
+            transition: all 0.3s ease;
+        }
+
+        .login-btn i {
+            font-size: 20px; /* Increased icon size */
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px); /* Slightly more pronounced hover effect */
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 25px; /* Increased margin */
+            color: #666;
+            font-size: 16px; /* Increased font size */
+        }
+
+        .login-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 16px; /* Increased font size */
+            transition: all 0.3s ease;
+        }
+
+        .back-to-home i {
+            font-size: 16px; /* Increased icon size */
+        }
+
+        .back-to-home:hover {
+            color: #007bff;
+            transform: translateX(-3px);
+        }
+
+        /* Fixed responsive design for the larger container */
+        @media (max-width: 520px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+
+            .login-header h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-to-home">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Please login to your account</p>
+        </div>
+
+        <% if (message) { %>
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <%= message %>
+            </div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" 
+                       name="username" 
+                       class="form-control" 
+                       placeholder="Username" 
+                       required 
+                       autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" 
+                       name="password" 
+                       class="form-control" 
+                       placeholder="Password" 
+                       required 
+                       autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Remove the server-side code from client-side script
+        
+        // Check for URL parameters on page load
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorParam = urlParams.get('error');
+            
+            if (errorParam === 'access') {
+                alert('Access denied: You do not have permission to access that page.');
+            }
+            else if (errorParam === 'noaccount') {
+                alert('Your account is not authorized. Please contact an administrator.');
+            }
+        }
+    </script>
+</body>
+</html>

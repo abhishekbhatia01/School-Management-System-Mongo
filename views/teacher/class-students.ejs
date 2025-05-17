@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f6f8fa;
+    }
+
+    /* Sidebar styles (same as your classes.ejs) */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Content area */
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 220px;
+      overflow-y: auto;
+    }
+    
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .page-title {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-bottom: 0;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link i {
+      margin-right: 5px;
+    }
+    
+    /* Class info card */
+    .class-info-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+    }
+    
+    .class-name {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .class-details {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .class-detail {
+      display: flex;
+      align-items: center;
+      color: #7f8c8d;
+    }
+    
+    .class-detail i {
+      margin-right: 5px;
+      color: #3498db;
+    }
+    
+    /* Student table */
+    .student-table {
+      width: 100%;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-collapse: collapse;
+    }
+    
+    .student-table th {
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      text-align: left;
+      padding: 15px;
+      font-weight: 600;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .student-table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      color: #2c3e50;
+    }
+    
+    .student-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .student-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .no-students {
+      text-align: center;
+      padding: 40px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Teacher Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/teacherdash"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/teacher/classes" class="active"><i class="fa-solid fa-chalkboard-user"></i> <span>My Classes</span></a>
+      <a href="/teacher/tasks"><i class="fa-solid fa-clipboard-list"></i> <span>Tasks</span></a>
+      <a href="/teacher/profile"><i class="fa-solid fa-user"></i> <span>My Profile</span></a>
+      <a href="/teacher/logout"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="page-header">
+      <h1 class="page-title"><%= pageTitle %></h1>
+      <a href="/teacher/classes" class="back-link"><i class="fas fa-arrow-left"></i> Back to Classes</a>
+    </div>
+    
+    <div class="class-info-card">
+      <div class="class-name">Class <%= classData.name %>-<%= classData.section %></div>
+      <div class="class-details">
+        <div class="class-detail"><i class="fas fa-id-card"></i> Class ID: <%= classData.classId || 'N/A' %></div>
+        <div class="class-detail"><i class="fas fa-users"></i> Total Students: <%= students.length %></div>
+      </div>
+    </div>
+    
+    <% if (students && students.length > 0) { %>
+      <table class="student-table">
+        <thead>
+          <tr>
+            <th>Roll No.</th>
+            <th>Name</th>
+            <th>Father's Name</th>
+            <th>Contact</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% students.forEach(student => { %>
+            <tr>
+              <td><%= student.rollNumber || 'N/A' %></td>
+              <td><%= student.fname %> <%= student.lname %></td>
+              <td><%= student.fathername %></td>
+              <td><%= student.mobno %></td>
+              <td><%= student.email || 'N/A' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="no-students">
+        <i class="fas fa-info-circle" style="font-size: 48px; display: block; margin-bottom: 20px; opacity: 0.5;"></i>
+        <p>No students found in this class.</p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

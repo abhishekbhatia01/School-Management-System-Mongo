@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f6f8fa;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+    /* Content area */
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 220px;
+      overflow-y: auto;
+    }
+
+    .page-title {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .class-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .class-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .class-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .class-header {
+      background-color: #3498db;
+      color: white;
+      padding: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .class-body {
+      padding: 15px;
+    }
+
+    .class-info {
+      margin-bottom: 15px;
+    }
+
+    .class-info p {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      color: #7f8c8d;
+    }
+
+    .class-info p i {
+      margin-right: 8px;
+      width: 16px;
+      color: #3498db;
+    }
+
+    .class-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .class-btn {
+      display: block;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    .students-btn {
+      background-color: #e3f2fd;
+      color: #3498db;
+    }
+
+    .students-btn:hover {
+      background-color: #bbdefb;
+    }
+
+    .attendance-btn {
+      background-color: #e8f5e9;
+      color: #27ae60;
+    }
+
+    .attendance-btn:hover {
+      background-color: #c8e6c9;
+    }
+
+    .no-classes {
+      text-align: center;
+      padding: 40px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      color: #7f8c8d;
+    }
+    .welcome {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #3498db;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .welcome h3 {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>Teacher Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/teacherdash"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/teacher/classes"  class="active"><i class="fa-solid fa-chalkboard-user"></i> <span>My Classes</span></a>
+      <a href="/teacher/tasks"><i class="fa-solid fa-clipboard-list"></i> <span>Tasks</span></a>
+      <a href="/teacher/profile"><i class="fa-solid fa-user"></i> <span>My Profile</span></a>
+      <a href="/teacher/logout"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="welcome">
+            <h3>Assigned Classes</h3>
+        </div>
+    
+    <% if (assignedClasses && assignedClasses.length > 0) { %>
+      <div class="class-list">
+        <% assignedClasses.forEach(classItem => { %>
+          <div class="class-card">
+            <div class="class-header">
+              Class <%= classItem.name %>-<%= classItem.section %>
+            </div>
+            <div class="class-body">
+              <div class="class-info">
+                <p><i class="fas fa-id-card"></i> Class ID: <%= classItem.classId %></p>
+                <p><i class="fas fa-users"></i> Students: <%= classItem.studentCount || 0 %></p>
+              </div>
+              
+              <div class="class-actions">
+                <a href="/teacher/class/<%= classItem._id %>/students" class="class-btn students-btn">
+                  <i class="fas fa-user-graduate"></i> Students
+                </a>
+                <a href="/teacher/class/<%= classItem._id %>/attendance" class="class-btn attendance-btn">
+                  <i class="fas fa-clipboard-check"></i> Attendance
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="no-classes">
+        <i class="fas fa-info-circle" style="font-size: 48px; display: block; margin-bottom: 20px; opacity: 0.5;"></i>
+        <p>You haven't been assigned to any classes yet.</p>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

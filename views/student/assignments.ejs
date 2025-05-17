@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignments | Student Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f0f4f8;
+      color: #333;
+      height: 100vh;
+    }
+
+    /* Enhanced sidebar with gradient */
+    .sidebar {
+      width: 220px;
+      background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+      color: white;
+      padding: 20px 0;
+      height: 100vh;
+      position: fixed;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ecf0f1;
+      font-weight: 600;
+      padding: 0 15px;
+    }
+
+    .sidebar hr {
+      border: none;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .nav-links {
+      padding: 0 15px;
+    }
+
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      color: #bdc3c7;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .nav-links i {
+      width: 20px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Fixed content area */
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+      width: calc(100% - 220px);
+      overflow-y: auto;
+    }
+
+    /* Enhanced content */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(41, 128, 185, 0.2);
+    }
+
+    .header h2 {
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Enhanced filter section */
+    .filter-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border-left: 4px solid #3498db;
+    }
+
+    .filter-section label {
+      color: #4a5568;
+      font-weight: 500;
+    }
+
+    .filter-section select {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 2px solid #e2e8f0;
+      background-color: #f8fafc;
+      color: #4a5568;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-section select:hover, .filter-section select:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Enhanced tasks list */
+    .task-list {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .task-item {
+      padding: 18px;
+      border-bottom: 1px solid #edf2f7;
+      transition: all 0.2s ease;
+    }
+
+    .task-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .task-item:last-child {
+      border-bottom: none;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .task-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #2d3748;
+    }
+
+    /* Enhanced status badges with gradients */
+    .task-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: linear-gradient(to right, #fef3c7, #fde68a);
+      color: #92400e;
+    }
+
+    .status-completed {
+      background: linear-gradient(to right, #dcfce7, #bbf7d0);
+      color: #166534;
+    }
+
+    .status-overdue {
+      background: linear-gradient(to right, #fee2e2, #fecaca);
+      color: #b91c1c;
+    }
+
+    .task-details {
+      color: #64748b;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      padding-left: 2px;
+    }
+
+    /* Enhanced task metadata */
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .task-meta div {
+      display: flex;
+      align-items: center;
+      padding: 5px 8px;
+      background-color: #f1f5f9;
+      border-radius: 4px;
+    }
+
+    .task-meta i {
+      margin-right: 6px;
+      color: #3b82f6;
+    }
+
+    /* Empty state */
+    .no-tasks {
+      padding: 40px 20px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .no-tasks i {
+      font-size: 3rem;
+      color: #cbd5e1;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    /* New styles for the done button */
+    .task-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .btn-done {
+      background: linear-gradient(to right, #4ade80, #22c55e);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(34, 197, 94, 0.3);
+    }
+    
+    .btn-done:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(34, 197, 94, 0.4);
+    }
+    
+    .btn-done:active {
+      transform: translateY(0);
+    }
+    
+    .btn-done i {
+      margin-right: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .sidebar h2, .nav-links a span {
+        display: none;
+      }
+      
+      .nav-links a {
+        padding: 15px 0;
+        text-align: center;
+        justify-content: center;
+      }
+      
+      .nav-links i {
+        margin-right: 0;
+        font-size: 1.2rem;
+      }
+      
+      .content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      
+      .task-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Sidebar -->
+  <div class="sidebar">
+    <h2>Student Portal</h2>
+    <hr>
+    <div class="nav-links">
+      <a href="/student/dashboard"><i class="fa-solid fa-gauge-high"></i> <span>Dashboard</span></a>
+      <a href="/student/attendance"><i class="fa-solid fa-calendar-check"></i> <span>Attendance</span></a>
+      <a href="/student/assignments" class="active"><i class="fas fa-book"></i> <span>Assignments</span></a>
+      <a href="/student/profile"><i class="fas fa-user"></i> <span>Profile</span></a>
+      <a href="/student/logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="header">
+      <h2>My Assignments</h2>
+      <div><%= student.fname %> <%= student.lname %> | <%= student.classInfo.name %>-<%= student.classInfo.section %></div>
+    </div>
+    
+    <!-- Filter -->
+    <div class="filter-section">
+      <label for="status-filter">Filter by Status: </label>
+      <select id="status-filter" onchange="window.location.href='/student/assignments?status='+this.value">
+        <option value="all" <%= status === 'all' ? 'selected' : '' %>>All Assignments</option>
+        <option value="pending" <%= status === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="completed" <%= status === 'completed' ? 'selected' : '' %>>Completed</option>
+      </select>
+    </div>
+    
+    <!-- Assignments List -->
+    <div class="task-list">
+      <% if (tasks && tasks.length > 0) { %>
+        <% tasks.forEach(task => { %>
+          <div class="task-item">
+            <div class="task-header">
+              <div class="task-title"><%= task.title %></div>
+              <% if (task.isOverdue) { %>
+                <span class="task-status status-overdue">Overdue</span>
+              <% } else if (task.status === 'completed') { %>
+                <span class="task-status status-completed">Completed</span>
+              <% } else { %>
+                <span class="task-status status-pending">Pending</span>
+              <% } %>
+            </div>
+            <div class="task-details">
+              <%= task.description %>
+            </div>
+            <div class="task-meta">
+              <div>
+                <i class="far fa-calendar-alt"></i>
+                Due: <%= new Date(task.dueDate).toLocaleDateString() %>
+              </div>
+              <% if (task.maxMarks) { %>
+                <div>
+                  <i class="far fa-star"></i>
+                  Max marks: <%= task.maxMarks %>
+                </div>
+              <% } %>
+              <% if (task.teacher) { %>
+                <div>
+                  <i class="far fa-user"></i>
+                  Assigned by: <%= task.teacher.fname %> <%= task.teacher.lname %>
+                </div>
+              <% } %>
+            </div>
+            
+            <!-- Add Done button for pending tasks -->
+            <% if (task.status !== 'completed' && !task.isOverdue) { %>
+              <div class="task-actions">
+                <form action="/student/assignments/complete/<%= task._id %>" method="POST">
+                  <button type="submit" class="btn-done">
+                    <i class="fas fa-check"></i> Mark as Done
+                  </button>
+                </form>
+              </div>
+            <% } else if (task.status !== 'completed' && task.isOverdue) { %>
+              <div class="task-actions">
+                <form action="/student/assignments/complete/<%= task._id %>" method="POST">
+                  <button type="submit" class="btn-done" style="background: linear-gradient(to right, #f97316, #ea580c);">
+                    <i class="fas fa-check"></i> Submit Late
+                  </button>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="no-tasks">
+          <i class="far fa-clipboard"></i>
+          <p>No assignments found for the selected filter.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

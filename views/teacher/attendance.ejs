@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #f5f7fa;
+      color: #2d3748;
+    }
+
+    /* Content Area */
+    .content {
+      padding: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Attendance Header */
+    .attendance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .attendance-header h2 {
+      font-size: 1.5rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    /* Date Controls */
+    .date-form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .date-input {
+      padding: 10px 15px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: #4a5568;
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+      min-width: 175px;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    }
+
+    .date-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .date-btn:hover {
+      background-color: #2980b9;
+      transform: translateY(-1px);
+    }
+
+    .date-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Navigation Buttons */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      background-color: #edf2f7;
+      color: #4a5568;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #e2e8f0;
+      color: #2d3748;
+    }
+
+    .back-btn i {
+      margin-right: 8px;
+    }
+
+    /* Success Message */
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .success-message i {
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    /* Attendance Form */
+    .attendance-form {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    /* Mark All Buttons */
+    .mark-all-btns {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .mark-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .mark-btn i {
+      font-size: 0.9rem;
+    }
+
+    .mark-present {
+      background-color: #e6fffa;
+      color: #047857;
+    }
+
+    .mark-present:hover {
+      background-color: #d1fae5;
+    }
+
+    .mark-absent {
+      background-color: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .mark-absent:hover {
+      background-color: #fee2e2;
+    }
+
+    /* Attendance Table */
+    .attendance-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+      padding: 14px 18px;
+      text-align: left;
+    }
+
+    .attendance-table thead {
+      background-color: #f8fafc;
+    }
+    
+    .attendance-table th {
+      color: #4a5568;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .attendance-table tbody tr {
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .attendance-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .attendance-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Attendance Radio Controls */
+    .attendance-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .radio-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .radio-group input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #cbd5e0;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .radio-group input[type="radio"]:checked::before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: currentColor;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .radio-group input[value="present"] {
+      color: #047857;
+    }
+
+    .radio-group input[value="present"]:checked {
+      border-color: #047857;
+    }
+
+    .radio-group input[value="absent"] {
+      color: #b91c1c;
+    }
+
+    .radio-group input[value="absent"]:checked {
+      border-color: #b91c1c;
+    }
+
+    .radio-group input[value="late"] {
+      color: #d97706;
+    }
+
+    .radio-group input[value="late"]:checked {
+      border-color: #d97706;
+    }
+
+    .radio-label {
+      margin-left: 5px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    /* Submit Row */
+    .submit-row {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .submit-btn {
+      background-color: #059669;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #047857;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .submit-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Empty State */
+    .no-students {
+      text-align: center;
+      padding: 40px 20px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .attendance-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 15px;
+      }
+      
+      .attendance-table th, 
+      .attendance-table td {
+        padding: 10px 8px;
+      }
+      
+      /* Hide roll number column on small screens */
+      .attendance-table .roll-column {
+        display: none;
+      }
+    }
+
+    @media print {
+      .attendance-header, .mark-all-btns, .submit-row {
+        display: none;
+      }
+      
+      body, .content {
+        margin: 0;
+        padding: 0;
+      }
+      
+      .attendance-form {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+ 
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="attendance-header">
+      <h2>Attendance: Class <%= classData.name %>-<%= classData.section %></h2>
+      <form class="date-form" action="/teacher/class/<%= classData._id %>/attendance" method="GET">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" class="date-input" value="<%= date %>" required>
+        <button type="submit" class="date-btn">Load</button>
+      </form>
+      <a href="/teacher/classes" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Classes
+      </a>
+    </div>
+
+    <% if (success) { %>
+      <div class="success-message">
+        <i class="fas fa-check-circle"></i> Attendance has been successfully saved!
+      </div>
+    <% } %>
+
+    <form action="/teacher/class/<%= classData._id %>/attendance" method="POST" class="attendance-form">
+      <input type="hidden" name="date" value="<%= date %>">
+      
+      <div class="mark-all-btns">
+        <button type="button" class="mark-btn mark-present" onclick="markAllPresent()">
+          <i class="fas fa-check-circle"></i> Mark All Present
+        </button>
+        <button type="button" class="mark-btn mark-absent" onclick="markAllAbsent()">
+          <i class="fas fa-times-circle"></i> Mark All Absent
+        </button>
+      </div>
+      
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th width="5%">#</th>
+            <th width="15%" class="roll-column">Roll No</th>
+            <th width="35%">Student Name</th>
+            <th width="45%">Attendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (students && students.length > 0) { %>
+            <% students.forEach((student, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td class="roll-column"><%= student.rollNumber || 'N/A' %></td>
+                <td><%= student.fname %> <%= student.lname %></td>
+                <td>
+                  <div class="attendance-controls">
+                    <div class="radio-group">
+                      <input type="radio" id="present-<%= student._id %>" 
+                        name="attendance[<%= student._id %>]" 
+                        value="present" checked>
+                      <label for="present-<%= student._id %>" class="radio-label">Present</label>
+                    </div>
+                    
+                    <div class="radio-group">
+                      <input type="radio" id="absent-<%= student._id %>" 
+                        name="attendance[<%= student._id %>]" 
+                        value="absent">
+                      <label for="absent-<%= student._id %>" class="radio-label">Absent</label>
+                    </div>
+                    
+                    <div class="radio-group">
+                      <input type="radio" id="late-<%= student._id %>" 
+                        name="attendance[<%= student._id %>]" 
+                        value="late">
+                      <label for="late-<%= student._id %>" class="radio-label">Late</label>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="4" class="no-students">No students found in this class.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+      
+      <% if (students && students.length > 0) { %>
+        <div class="submit-row">
+          <button type="button" class="back-btn" onclick="location.href='/teacher/classes'">Cancel</button>
+          <button type="submit" class="submit-btn">Save Attendance</button>
+        </div>
+      <% } %>
+    </form>
+  </div>
+
+  <script>
+    function markAllPresent() {
+      document.querySelectorAll('input[id^="present-"]').forEach(radio => {
+        radio.checked = true;
+      });
+    }
+    
+    function markAllAbsent() {
+      document.querySelectorAll('input[id^="absent-"]').forEach(radio => {
+        radio.checked = true;
+      });
+    }
+    
+    // Set default date to today if not specified
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!document.getElementById('date').value) {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+      }
+    });
+  </script>
+</body>
+</html>
