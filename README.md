@@ -74,7 +74,7 @@ npm start
 
 ]
 
-#📌 Future Enhancements
+##📌 Future Enhancements
 
 📑 Online Exam Module
 
@@ -83,7 +83,7 @@ npm start
 💬 Chat/Messaging between Teachers & Students
 
 📂 File Uploads for Assignments
-# 📂 Project Structure  
+## 📂 Project Structure  
 
 ---
 
