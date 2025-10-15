@@ -47,7 +47,7 @@ school-management-system/
 # ⚙️ Installation & Setup  
 
 1️⃣ **Clone the Repository**  
-git clone https://github.com/your-username/school-management-system.git
+git clone https://github.com/abhishekbhatia01/School-Management-System-Mongo.git
 cd school-management-system
 2️⃣ Install Dependencies
 
